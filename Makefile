@@ -1,4 +1,5 @@
-export ICP_ROOT ?= $(PWD)
+MAKEFLAGS += -l 0.0	#kernel space build and user space build race condition
+export ICP_ROOT ?= $(CURDIR)
 JOBS := $(shell nproc 2>/dev/null || echo 1)
 
 

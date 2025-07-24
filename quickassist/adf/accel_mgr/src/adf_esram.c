@@ -120,7 +120,7 @@ CpaStatus adf_esramSetConfigInfo(icp_accel_dev_t *pAccelDev,
     /* Set virtual address */
     ICP_MEMSET(valStr, 0, ADF_CFG_MAX_VAL_LEN_IN_BYTES);
     snprintf(valStr, ADF_CFG_MAX_VAL_LEN_IN_BYTES,
-                        "%p", (void *)virtAddr);
+                        "%lx", (uintptr_t)virtAddr);
     status = adf_cfgAddKeyValueParam(pAccelDev, pSection,
                         ADF_SRAM_VIRTUAL_ADDRESS, (void *)valStr, ADF_STR);
     ICP_CHECK_STATUS_AND_LOG(status,

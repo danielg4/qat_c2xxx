@@ -179,7 +179,8 @@ LAC-kernel_module:lib_kernel
 		-i -v -e "^\*\*\* Warning: \"icp_Qatal.*\" \[$(PWD)/lac.ko\] undefined\!"; \
 	echo "Copying outputs to $(ICP_BUILD_OUTPUT_DIR)";\
 	test -d $(ICP_BUILD_OUTPUT_DIR) || mkdir -p $(ICP_BUILD_OUTPUT_DIR);\
-	test -f lib.a  &&  mv lib.a $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC);\
+	test -f lib.a && (ar x lib.a && mv lib.a $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC));\
 	test -f $(OUTPUT_NAME).ko  &&  mv -f $(OUTPUT_NAME).ko $(ICP_BUILD_OUTPUT_DIR);\
 	test -f $(OUTPUT_NAME).o  &&  mv -f *.o $(ICP_BUILD_OUTPUT_DIR);\
 	$(RM) -rf *.mod.* .*.cmd;
@@ -207,7 +208,8 @@ $(LIB_STATIC): lib_kernel dirs
 	@echo 'Creating static library ${LIB_STATIC}'; \
 	$(MAKE) -C $(KERNEL_SOURCE_ROOT)/ M=$(PWD) obj-m=""; \
 	echo 'Copying outputs';\
-	test -f lib.a  &&  mv lib.a $(ICP_FINAL_OUTPUT_DIR)/$(LIB_STATIC);\
+	test -f lib.a && (ar x lib.a && mv lib.a $(ICP_FINAL_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $(ICP_FINAL_OUTPUT_DIR)/$(LIB_STATIC));\
 	$(RM) -f *.o *.mod.* .*.cmd;
 else
 lib_static: lib

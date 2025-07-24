@@ -547,7 +547,7 @@ CpaStatus adf_cfgAddKeyValueParam(icp_accel_dev_t *accel_dev,
     {
         value_addr = (Cpa64U *)val;
         snprintf(pKeyValue->val, ADF_CFG_MAX_VAL_LEN_IN_BYTES,
-                 "0x%p", value_addr);
+                 "0x%lx", (uintptr_t)value_addr);
     }
     else
     {

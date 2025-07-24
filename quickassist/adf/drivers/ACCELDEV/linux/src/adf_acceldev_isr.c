@@ -214,7 +214,7 @@ STATIC int adf_enable_msix(icp_accel_dev_t *accel_dev)
                (hw_data->msix.aeVectorStart - hw_data->msix.banksVectorNum);
         }
 
-        stat = pci_enable_msix(pci_dev_info->pDev,
+        stat = pci_enable_msix_exact(pci_dev_info->pDev,
                                pci_dev_info->msixEntries.value,
                                msix_num_entries);
         if (SUCCESS != stat){

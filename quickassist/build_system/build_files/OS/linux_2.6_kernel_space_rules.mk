@@ -74,9 +74,10 @@ $(LIB_STATIC): dirs
 	@echo 'Creating static library ${LIB_STATIC}'; \
 	$(MAKE) -C $(KERNEL_SOURCE_ROOT)/ M=$(PWD) obj-m=""; \
 	echo 'Copying outputs';\
+	test -f lib.a && (ar x lib.a && mv lib.a $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC));\
 	mv -f $(OBJ) $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	test -f built-in.o  &&  mv -f built-in.o $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
-	test -f lib.a  &&  mv lib.a $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC);\
 	test -f $(OUTPUT_NAME).ko  &&  mv -f $(OUTPUT_NAME).ko $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	test -f $(OUTPUT_NAME).o  &&  mv -f $(OUTPUT_NAME).o $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	$(RM) -rf *.mod.* .*.cmd;
@@ -86,9 +87,10 @@ $(MODULENAME): dirs
 	@echo 'Creating kernel module'; \
 	$(MAKE) -C $(KERNEL_SOURCE_ROOT)/ M=$(PWD); \
 	echo 'Copying outputs';\
+	test -f lib.a && (ar x lib.a && mv lib.a $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC));\
 	mv -f $(OBJ) $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	test -f built-in.o  &&  mv -f built-in.o $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
-	test -f lib.a  &&  mv lib.a $($(PROG_ACY)_FINAL_OUTPUT_DIR)/$(LIB_STATIC);\
 	test -f $(OUTPUT_NAME).ko  &&  mv -f $(OUTPUT_NAME).ko $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	test -f $(OUTPUT_NAME).o  &&  mv -f $(OUTPUT_NAME).o $($(PROG_ACY)_FINAL_OUTPUT_DIR);\
 	$(RM) -rf *.mod.* .*.cmd;

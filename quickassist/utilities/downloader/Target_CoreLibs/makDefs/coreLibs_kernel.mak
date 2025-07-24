@@ -75,7 +75,8 @@ libs :
 	-@ $(MKDIR) "$(LIB_DIR)"
 	-@ $(MKDIR) "$(LIB_DIR)/$(ICP_TOOLS_TARGET)"
 	@cd $(HALAETGT_DIR) $(CMD_CAT) $(MAKE) CCMODE=$(CCMODE) $(KVER_OPTION)
-	mv $(HALAETGT_DIR)/lib.a $(LIB_DIR)/$(ICP_TOOLS_TARGET)/icp_ae_loader_kernel.a
+	ar x $(HALAETGT_DIR)/lib.a && mv $(HALAETGT_DIR)/lib.a $(LIB_DIR)/$(ICP_TOOLS_TARGET)/icp_ae_loader_kernel.a ||\
+	ar -t $(HALAETGT_DIR)/lib.a|xargs ar rcsD $(LIB_DIR)/$(ICP_TOOLS_TARGET)/icp_ae_loader_kernel.a
 
 clean : clean_libs
 

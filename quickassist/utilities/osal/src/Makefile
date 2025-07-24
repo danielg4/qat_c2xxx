@@ -112,7 +112,8 @@ kernel_module:lib_kernel
 	$(MAKE) -C $(KERNEL_SOURCE_ROOT)/ M=$(PWD) 2>&1
 	echo "Copying outputs to $(ICP_BUILD_OUTPUT_DIR)";\
 	test -d $(ICP_BUILD_OUTPUT_DIR) || mkdir -p $(ICP_BUILD_OUTPUT_DIR);\
-	test -f lib.a  &&  mv lib.a $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC);\
+	test -f lib.a && (ar x lib.a && mv lib.a $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $(ICP_BUILD_OUTPUT_DIR)/$(LIB_STATIC));\
 	test -f $(OUTPUT_NAME).ko  &&  mv -f $(OUTPUT_NAME).ko $(ICP_BUILD_OUTPUT_DIR);\
 	$(RM) -rf *.mod.* .*.cmd;
 
@@ -146,7 +147,8 @@ $(LIB_STATIC): lib_kernel dirs
 	@echo 'Creating static library ${LIB_STATIC}'; \
 	$(MAKE) -C $(KERNEL_SOURCE_ROOT)/ M=$(PWD) obj-m=""; \
 	echo 'Copying outputs';\
-	test -f lib.a  &&  mv lib.a $(FINAL_OUTPUT_DIR)/$(LIB_STATIC);\
+	test -f lib.a && (ar x lib.a && mv lib.a $(FINAL_OUTPUT_DIR)/$(LIB_STATIC) ||\
+	ar -t lib.a|xargs ar rcsD $(FINAL_OUTPUT_DIR)/$(LIB_STATIC));\
 	$(RM) -f *.o *.mod.* .*.cmd;
 endif
 
